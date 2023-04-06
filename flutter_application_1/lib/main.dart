@@ -16,8 +16,9 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   int _opSelect = 0;
+  int _buttonBar = 0;
   String _imgEl =
-      "https://www.imagensempng.com.br/wp-content/uploads/2021/05/Homem-Aranha-Parede-Png-1024x1024.png";
+      "https://upload.wikimedia.org/wikipedia/en/9/90/The_DuckDuckGo_Duck.png";
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class _MyAppState extends State<MyApp> {
           body: Center(
             child: Column(children: [
               const Text(
-                "\nProjetos\n\n",
+                "\nImagens:\n",
                 style: TextStyle(
                   fontStyle: FontStyle.normal,
                   fontSize: 25,
@@ -48,69 +49,120 @@ class _MyAppState extends State<MyApp> {
                   fontFamily: 'Pokemon',
                 ),
               ),
-              /*
-          Container(
-          //color: Color.fromARGB(125, 109, 251, 114),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage("https://fastly.picsum.photos/id/78/1584/2376.jpg?hmac=80UVSwpa9Nfcq7sQ5kxb9Z5sD2oLsbd5zkFO5ybMC4E"),
-              fit: BoxFit.cover,
-            )
-          )
-          ),*/
               Container(
                 width: 200,
                 height: 200,
                 child: Image.network("$_imgEl"),
               ),
-              Text(
-                "Calculadora IMC\n",
-                style: TextStyle(
-                  color: Colors.blue.shade900,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Pokemon',
-                ),
+              Container(
+                height: 30,
               ),
-              Text(
-                "Encontra CEP\n",
-                style: TextStyle(
-                  color: Color.fromARGB(255, 167, 223, 55),
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Pokemon',
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    "Melque",
+                    style: TextStyle(
+                      color: Colors.blue.shade900,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Pokemon',
+                    ),
+                  ),
+                  Text(
+                    "Rodrigues",
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 222, 109, 22),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Pokemon',
+                    ),
+                  ),
+                  Text(
+                    "da",
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 40, 216, 17),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Pokemon',
+                    ),
+                  ),
+                  Text(
+                    "Trindade",
+                    style: TextStyle(
+                      color: Color.fromRGBO(174, 32, 235, 1),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Pokemon',
+                    ),
+                  ),
+                  Text(
+                    "Santos",
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 213, 8, 8),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Pokemon',
+                    ),
+                  )
+                ],
               ),
-              Text(
-                "Clone Ifood",
-                style: TextStyle(
-                  color: Color.fromARGB(255, 40, 216, 17),
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Pokemon',
+              Container(
+                height: 50,
+              ),
+              SizedBox(
+                width: 200,
+                height: 70,
+                child: ElevatedButton(
+                  onPressed: () {
+                    _opSelect++;
+                    setState(() {
+                      if (_opSelect == 0) {
+                        _imgEl =
+                            "https://upload.wikimedia.org/wikipedia/en/9/90/The_DuckDuckGo_Duck.png";
+                      } else if (_opSelect == 1) {
+                        _imgEl =
+                            "https://fastly.picsum.photos/id/78/1584/2376.jpg?hmac=80UVSwpa9Nfcq7sQ5kxb9Z5sD2oLsbd5zkFO5ybMC4E";
+                      } else {
+                        _opSelect = -1;
+                        _imgEl =
+                            "https://cdn.pixabay.com/photo/2017/09/01/00/16/png-2702697_1280.png";
+                      }
+                    });
+
+                    print("butoon num: $_opSelect");
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.arrow_forward),
+                      Text(
+                        "Passar Imagem",
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               )
             ]),
           ),
           bottomNavigationBar: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
-              currentIndex: _opSelect,
+              currentIndex: _buttonBar,
               onTap: (op) {
-                print("Botão: $op");
-
                 setState(() {
                   if (op == 0) {
-                    _opSelect = op;
-                    _imgEl =
-                        "https://www.imagensempng.com.br/wp-content/uploads/2021/05/Homem-Aranha-Parede-Png-1024x1024.png";
+                    _buttonBar = op;
+                    print("Clicou no Home");
                   } else if (op == 1) {
-                    _opSelect = op;
-                    _imgEl =
-                        "https://fastly.picsum.photos/id/78/1584/2376.jpg?hmac=80UVSwpa9Nfcq7sQ5kxb9Z5sD2oLsbd5zkFO5ybMC4E";
+                    _buttonBar = op;
+                    print("Clicou no Perfil");
                   } else {
-                    _opSelect = op;
-                    _imgEl =
-                        "https://www.imagensempng.com.br/wp-content/uploads/2023/02/Icones-Instagram-Png-300x300.png";
+                    _buttonBar = op;
+                    print("Clicou no Pesquisar");
                   }
                 });
               },
