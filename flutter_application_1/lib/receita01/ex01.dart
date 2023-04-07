@@ -49,10 +49,24 @@ class _MyAppState extends State<MyApp> {
                   fontFamily: 'Pokemon',
                 ),
               ),
+              /*
               Container(
                 width: 200,
                 height: 200,
                 child: Image.network("$_imgEl"),
+              ),*/
+              Stack(
+                children: [
+                  FadeInImage.assetNetwork(
+                    width: 200,
+                    height: 200,
+                    placeholder: "assets/imgs/fotodia.png",
+                    image: "$_imgEl",
+                    fadeInDuration: const Duration(milliseconds: 500),
+                    fadeInCurve: Curves.easeIn,
+                    //fit: BoxFit.cover,
+                  ),
+                ],
               ),
               Container(
                 height: 30,
