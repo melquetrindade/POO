@@ -1,93 +1,153 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  MaterialApp app = MaterialApp(
-    theme: ThemeData(primarySwatch: Colors.blue, ),
-    home: Scaffold(
-      appBar: AppBar(
-        title: const Center(
-          child: Text("Meu Portfólio",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      )
-                     ),
-      ),
-      backgroundColor: Colors.blue.shade900,
-    ),
-    body: Center(
-      child: Column(
-        children: [
-          const Text("\nProjetos\n\n",
-              style: TextStyle(
-                fontStyle: FontStyle.normal,
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-              ),
-              ),
-          Text("Calculadora IMC\n",
-                style: TextStyle(
-                  color: Colors.blue.shade900,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-          Text("Clone Ifood",
-                style: TextStyle(
-                  color: Colors.lime,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              )
-        ]
-      ),
-    ),
-    bottomNavigationBar: BottomNavigationBar(
-      
-      
-      type: BottomNavigationBarType.fixed,
-      currentIndex: 0,
-      onTap: (op) {
-   
-        var buttonSelect = Teste(a: op);
-        buttonSelect.mostra();
-        
-        
-      },
-      items: const [
-        BottomNavigationBarItem(
-          label: "Home",
-          icon: Icon(Icons.home),
-        ),
-        BottomNavigationBarItem(
-          label: "Perfil",
-          icon: Icon(Icons.person),
-        ),
-        BottomNavigationBarItem(
-          label: "Pesquisar",
-          icon: Icon(Icons.search),
-        )
-      ]
-    ),
-   ));
-  
-  runApp(app);
+  runApp(MyApp());
 }
 
-class Teste{
-  int a;
-  
-  void mostra(){
-    if(a == 0){
-      print("Botão: Home"); 
-    }
-    else if(a == 1){
-      print("Botão: Perfil");
-    }
-    else{
-      print("Botão: Pesquisa");
-    }
+class MyApp extends StatefulWidget {
+  MyApp({Key? key}) : super(key: key);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(primarySwatch: Colors.purple),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Center(
+            child: Text(
+              "Cervejas",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 17,
+              ),
+            ),
+          ),
+        ),
+        body: SizedBox(
+          width: double.infinity,
+          child: SingleChildScrollView(
+            child: DataTable(
+              columns: [
+                DataColumn(label: Text("Nome",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                )),
+                DataColumn(label: Text("Estilo",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                )),
+                DataColumn(label: Text("IBU",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                )),
+              ],
+              rows: [
+                DataRow(cells: [
+                  DataCell(Text("La Fin Du Monde")),
+                  DataCell(Text("Bock")),
+                  DataCell(Text("65")),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text("Sapporo Premium")),
+                  DataCell(Text("Sour Ale")),
+                  DataCell(Text("54")),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text("Duvel")),
+                  DataCell(Text("Pilsner")),
+                  DataCell(Text("82")),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text("Skol")),
+                  DataCell(Text("Puro Malte")),
+                  DataCell(Text("54")),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text("Itaipava")),
+                  DataCell(Text("Puro Malte")),
+                  DataCell(Text("82")),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text("Devassa")),
+                  DataCell(Text("Puro Malte")),
+                  DataCell(Text("82")),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text("La Fin Du Monde")),
+                  DataCell(Text("Bock")),
+                  DataCell(Text("65")),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text("Sapporo Premium")),
+                  DataCell(Text("Sour Ale")),
+                  DataCell(Text("54")),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text("Duvel")),
+                  DataCell(Text("Pilsner")),
+                  DataCell(Text("82")),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text("Skol")),
+                  DataCell(Text("Puro Malte")),
+                  DataCell(Text("54")),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text("Itaipava")),
+                  DataCell(Text("Puro Malte")),
+                  DataCell(Text("82")),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text("Devassa")),
+                  DataCell(Text("Puro Malte")),
+                  DataCell(Text("82")),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text("La Fin Du Monde")),
+                  DataCell(Text("Bock")),
+                  DataCell(Text("65")),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text("Sapporo Premium")),
+                  DataCell(Text("Sour Ale")),
+                  DataCell(Text("54")),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text("Duvel")),
+                  DataCell(Text("Pilsner")),
+                  DataCell(Text("82")),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text("Skol")),
+                  DataCell(Text("Puro Malte")),
+                  DataCell(Text("54")),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text("Itaipava")),
+                  DataCell(Text("Puro Malte")),
+                  DataCell(Text("82")),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text("Devassa")),
+                  DataCell(Text("Puro Malte")),
+                  DataCell(Text("82")),
+                ]),
+              ],
+            ),
+          )
+        ),
+        
+        
+        
+      ),
+    );
   }
-  
-  Teste({required this.a});
 }
