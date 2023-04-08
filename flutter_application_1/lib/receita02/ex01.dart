@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+void main() => runApp(MyApp());
+
 class NewNavBar extends StatelessWidget {
   NewNavBar();
 
@@ -24,7 +26,7 @@ class NewNavBar extends StatelessWidget {
   }
 }
 
-class NewExpanded extends StatelessWidget{
+class NewExpanded extends StatelessWidget {
   NewExpanded();
 
   @override
@@ -45,19 +47,33 @@ class NewExpanded extends StatelessWidget{
   }
 }
 
-void main() {
-  MaterialApp app = MaterialApp(
-    theme: ThemeData(
-      primarySwatch: Colors.purple,
-    ),
-    home: Scaffold(
-      appBar: AppBar(
-        title: const Text("Dicas"),
-      ),
-      body: NewExpanded(),
-      bottomNavigationBar: NewNavBar(),
-    ),
-  );
+class NewAppBar extends StatelessWidget {
+  NewAppBar();
 
-  runApp(app);
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text("Dicas"),
+    );
+  }
+}
+
+class MyApp extends StatelessWidget {
+  MyApp();
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.purple,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: NewAppBar(),
+        ),
+        body: NewExpanded(),
+        bottomNavigationBar: NewNavBar(),
+      ),
+    );
+  }
 }
