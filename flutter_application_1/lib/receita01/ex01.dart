@@ -1,3 +1,5 @@
+//Aluno: Melque Rodrigues da Trindade
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -49,12 +51,6 @@ class _MyAppState extends State<MyApp> {
                   fontFamily: 'Pokemon',
                 ),
               ),
-              /*
-              Container(
-                width: 200,
-                height: 200,
-                child: Image.network("$_imgEl"),
-              ),*/
               Stack(
                 children: [
                   FadeInImage.assetNetwork(
