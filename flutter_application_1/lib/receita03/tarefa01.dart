@@ -4,6 +4,19 @@ void main() {
   runApp(MyApp());
 }
 
+class NewAppBar extends AppBar {
+  NewAppBar({super.title, super.key}): super(
+ 
+    actions: [PopupMenuButton(
+      itemBuilder: (context) {
+        return [
+          PopupMenuItem<int>(value: 0, child: Text("Azul")),
+          PopupMenuItem<int>(value: 1, child: Text("Vermelho"))
+        ];
+      })
+    ]);
+}
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -11,8 +24,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(primarySwatch: Colors.deepPurple),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          appBar: AppBar(
-            title: const Text("Dicas"),
+          appBar: NewAppBar(
+            title: Center(child: Text("Dicas")),
           ),
           body: Center(
             child: DataBodyWidget(objetos: [
@@ -21,32 +34,14 @@ class MyApp extends StatelessWidget {
               "Duvel - Pilsner - 82 ibu"
             ]),
           ),
-          bottomNavigationBar: NewNavBar(objects: [Icon(Icons.coffee_outlined), Icon(Icons.local_drink_outlined), Icon(Icons.flag_outlined)]),
+          bottomNavigationBar: NewNavBar(objects: [
+            Icon(Icons.coffee_outlined),
+            Icon(Icons.local_drink_outlined),
+            Icon(Icons.flag_outlined)
+          ]),
         ));
   }
 }
-/*
-class NewNavBar extends StatelessWidget {
-  NewNavBar();
-
-  void botaoFoiTocado(int index) {
-    print("Tocaram no botão $index");
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(onTap: botaoFoiTocado, items: const [
-      BottomNavigationBarItem(
-        label: "Cafés",
-        icon: Icon(Icons.coffee_outlined),
-      ),
-      BottomNavigationBarItem(
-          label: "Cervejas", icon: Icon(Icons.local_drink_outlined)),
-      BottomNavigationBarItem(label: "Nações", icon: Icon(Icons.flag_outlined))
-    ]);
-  }
-}
-*/
 
 class NewNavBar extends StatelessWidget {
   List<Icon> objects;
@@ -61,7 +56,8 @@ class NewNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
         onTap: botaoFoiTocado,
-        items: objects.map((obj) => BottomNavigationBarItem(icon: obj, label: 'Botão'))
+        items: objects
+            .map((obj) => BottomNavigationBarItem(icon: obj, label: 'Botão'))
             .toList());
   }
 }
@@ -72,6 +68,7 @@ class DataBodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: objetos.map((obj) => Expanded(child: Text("$obj"))).toList());
+    return Column(
+        children: objetos.map((obj) => Expanded(child: Text("$obj"))).toList());
   }
 }
