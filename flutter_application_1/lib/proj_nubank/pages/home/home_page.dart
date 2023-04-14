@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
             },
           ),
           Positioned(
-            top: _screenHeigth * 0.14,
+            top: _screenHeigth * 0.17,
             height: _screenHeigth * 0.55,
             left: 0,
             right: 0,
