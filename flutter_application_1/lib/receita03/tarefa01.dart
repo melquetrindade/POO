@@ -5,15 +5,17 @@ void main() {
 }
 
 class NewAppBar extends AppBar {
-  NewAppBar({super.title, super.key}): super(
+  final List<String> opcoes;
+  final String titulo; 
+  NewAppBar({this.titulo = "Default", this.opcoes = const []}): super(
  
+    title: Text(titulo),
     actions: [PopupMenuButton(
-      itemBuilder: (context) {
-        return [
-          PopupMenuItem<int>(value: 0, child: Text("Azul")),
-          PopupMenuItem<int>(value: 1, child: Text("Vermelho"))
-        ];
-      })
+      itemBuilder: (context) => opcoes.map((e) => PopupMenuItem<int>(value: e.indexOf(e), child: Text(e))).toList()
+
+          
+
+      )
     ]);
 }
 
@@ -25,7 +27,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           appBar: NewAppBar(
-            title: Center(child: Text("Dicas")),
+            titulo: "Dicas",
+            opcoes: ["Vermelho","Azul"],
           ),
           body: Center(
             child: DataBodyWidget(objetos: [
