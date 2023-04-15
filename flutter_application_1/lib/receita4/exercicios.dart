@@ -6,38 +6,60 @@ void main() {
 
 var dataCervejas = [
   {"nome": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
-  {"nome": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
-  {"nome": "Duvel", "style": "Pilsner", "ibu": "82"},
+  {
+    "nome": "Sapporo Premiume",
+    "style": "Sour Ale",
+    "ibu": "54"
+  },
+  {
+    "nome": "Duvel",
+    "style": "Pilsner",
+    "ibu": "82"
+  },
   {"nome": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
-  {"nome": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
-  {"nome": "Duvel", "style": "Pilsner", "ibu": "82"},
+  {
+    "nome": "Sapporo Premiume",
+    "style": "Sour Ale",
+    "ibu": "54"
+  },
+  {
+    "nome": "Duvel",
+    "style": "Pilsner",
+    "ibu": "82"
+  },
   {"nome": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
-  {"nome": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
-  {"nome": "Duvel", "style": "Pilsner", "ibu": "82"},
+  {
+    "nome": "Sapporo Premiume",
+    "style": "Sour Ale",
+    "ibu": "54"
+  },
+  {
+    "nome": "Duvel",
+    "style": "Pilsner",
+    "ibu": "82"
+  },
   {"nome": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
-  {"nome": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
-  {"nome": "Duvel", "style": "Pilsner", "ibu": "82"},
+  {
+    "nome": "Sapporo Premiume",
+    "style": "Sour Ale",
+    "ibu": "54"
+  },
+  {
+    "nome": "Duvel",
+    "style": "Pilsner",
+    "ibu": "82"
+  },
   {"nome": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
-  {"nome": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
-  {"nome": "Duvel", "style": "Pilsner", "ibu": "82"}
-];
-
-var dataCafe = [
-  {"nome": "raquel", "style": "Bock", "ibu": "65"},
-  {"nome": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
-  {"nome": "Duvel", "style": "Pilsner", "ibu": "82"},
-  {"nome": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
-  {"nome": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
-  {"nome": "Duvel", "style": "Pilsner", "ibu": "82"},
-  {"nome": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
-  {"nome": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
-  {"nome": "Duvel", "style": "Pilsner", "ibu": "82"},
-  {"nome": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
-  {"nome": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
-  {"nome": "Duvel", "style": "Pilsner", "ibu": "82"},
-  {"nome": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
-  {"nome": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
-  {"nome": "melque", "style": "Pilsner", "ibu": "82"}
+  {
+    "nome": "Sapporo Premiume",
+    "style": "Sour Ale",
+    "ibu": "54"
+  },
+  {
+    "nome": "Duvel",
+    "style": "Pilsner",
+    "ibu": "82"
+  }
 ];
 
 class NewAppBar extends AppBar {
@@ -62,7 +84,7 @@ class MyApp extends StatelessWidget {
           appBar: NewAppBar(
             title: Center(child: Text("Dicas")),
           ),
-          body: DataBodyWidget(objetos: dataCervejas),
+          body: DataBodyWidget(cerveja: dataCervejas,),
           bottomNavigationBar: NewNavBar(objects: [
             Icon(Icons.coffee_outlined),
             Icon(Icons.local_drink_outlined),
@@ -91,61 +113,24 @@ class NewNavBar extends StatelessWidget {
 }
 
 class DataBodyWidget extends StatelessWidget {
-  List objetos;
-  DataBodyWidget({this.objetos = const []});
+  List cerveja;
+  DataBodyWidget(
+      {this.cerveja = const []});
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: objetos.length,
+        itemCount: cerveja.length,
         itemBuilder: (context, i) {
-          var cervejas = objetos[i];
-          var avatar =
-              CircleAvatar(backgroundColor: Colors.blue,);
+          var cervejas = cerveja[i];
           return ListTile(
-            leading: avatar,
+            leading: Icon(Icons.local_drink_outlined),
             title: Text(cervejas["nome"]),
             subtitle: Text("Estilo: " +
                 cervejas["style"] +
-                "\n"
-                    "IBU: " +
+                "\n" "IBU: " +
                 cervejas["ibu"]),
           );
         });
   }
 }
-
-/*
-class DataBodyWidget extends StatelessWidget {
-  List objetos;
-  DataBodyWidget({this.objetos = const []});
-
-  @override
-  Widget build(BuildContext context) {
-
-    var columnNames = ["Nome","Estilo","IBU"],
-
-        propertyNames = ["nome", "style", "ibu"];
-
-    return SizedBox(
-      width: double.infinity,
-      child: SingleChildScrollView(
-        child: DataTable(
-          columns:
-            columnNames.map((
-              name) => DataColumn(
-                label: Expanded(
-                  child: Text(name, style: TextStyle(fontStyle: FontStyle.italic))
-                )
-              )
-            ).toList()
-          ,
-          rows: objetos.map((e) => DataRow(
-            cells: propertyNames.map((propNames) => DataCell(Text(e[propNames]))).toList()
-            )).toList()
-        ),
-      ),
-    );
-  }
-}
-*/
