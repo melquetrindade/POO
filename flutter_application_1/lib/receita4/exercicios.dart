@@ -85,7 +85,7 @@ class MyApp extends StatelessWidget {
             title: Center(child: Text("Dicas")),
           ),
           body: DataBodyWidget(cerveja: dataCervejas,),
-          bottomNavigationBar: NewNavBar(objects: [
+          bottomNavigationBar: NewNavBar(objects: const [
             Icon(Icons.coffee_outlined),
             Icon(Icons.local_drink_outlined),
             Icon(Icons.flag_outlined)
