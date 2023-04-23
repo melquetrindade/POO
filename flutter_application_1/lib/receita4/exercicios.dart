@@ -6,60 +6,37 @@ void main() {
 
 var dataCervejas = [
   {"nome": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
-  {
-    "nome": "Sapporo Premiume",
-    "style": "Sour Ale",
-    "ibu": "54"
-  },
-  {
-    "nome": "Duvel",
-    "style": "Pilsner",
-    "ibu": "82"
-  },
+  {"nome": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+  {"nome": "Duvel", "style": "Pilsner", "ibu": "82"},
   {"nome": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
-  {
-    "nome": "Sapporo Premiume",
-    "style": "Sour Ale",
-    "ibu": "54"
-  },
-  {
-    "nome": "Duvel",
-    "style": "Pilsner",
-    "ibu": "82"
-  },
+  {"nome": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+  {"nome": "Duvel", "style": "Pilsner", "ibu": "82"},
   {"nome": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
-  {
-    "nome": "Sapporo Premiume",
-    "style": "Sour Ale",
-    "ibu": "54"
-  },
-  {
-    "nome": "Duvel",
-    "style": "Pilsner",
-    "ibu": "82"
-  },
+  {"nome": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+  {"nome": "Duvel", "style": "Pilsner", "ibu": "82"},
   {"nome": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
-  {
-    "nome": "Sapporo Premiume",
-    "style": "Sour Ale",
-    "ibu": "54"
-  },
-  {
-    "nome": "Duvel",
-    "style": "Pilsner",
-    "ibu": "82"
-  },
+  {"nome": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+  {"nome": "Duvel", "style": "Pilsner", "ibu": "82"},
   {"nome": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
-  {
-    "nome": "Sapporo Premiume",
-    "style": "Sour Ale",
-    "ibu": "54"
-  },
-  {
-    "nome": "Duvel",
-    "style": "Pilsner",
-    "ibu": "82"
-  }
+  {"nome": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+  {"nome": "Duvel", "style": "Pilsner", "ibu": "82"}
+];
+
+var dataPaises = [
+  {"nome": "Brasil", "populacao": "214,3 milhões", "moeda": "Real"},
+  {"nome": "Argentina", "populacao": "45,81 milhões", "moeda": "Peso"},
+  {"nome": "Alemanha", "populacao": "83,2 milhões", "moeda": "Euro"},
+  {"nome": "França", "populacao": "67,75 milhões", "moeda": "Euro"},
+  {"nome": "China", "populacao": "1,412 bilhão", "moeda": "Yuan"},
+  {"nome": "EUA", "populacao": "331,9 milhões", "moeda": "Dolár"},
+  {"nome": "México", "populacao": "126,7 milhões", "moeda": "Peso"},
+  {"nome": "Brasil", "populacao": "214,3 milhões", "moeda": "Real"},
+  {"nome": "Argentina", "populacao": "45,81 milhões", "moeda": "Peso"},
+  {"nome": "Alemanha", "populacao": "83,2 milhões", "moeda": "Euro"},
+  {"nome": "França", "populacao": "67,75 milhões", "moeda": "Euro"},
+  {"nome": "China", "populacao": "1,412 bilhão", "moeda": "Yuan"},
+  {"nome": "EUA", "populacao": "331,9 milhões", "moeda": "Dolár"},
+  {"nome": "México", "populacao": "126,7 milhões", "moeda": "Peso"},
 ];
 
 class NewAppBar extends AppBar {
@@ -84,7 +61,12 @@ class MyApp extends StatelessWidget {
           appBar: NewAppBar(
             title: Center(child: Text("Dicas")),
           ),
-          body: DataBodyWidget(cerveja: dataCervejas,),
+          body: DataBodyWidget(
+            objData: dataPaises,
+            columnNames: ["Nome", "População", "Moeda"],
+            propertyNames: ["nome", "populacao", "moeda"],
+            icon: Icon(Icons.flag_outlined),
+          ),
           bottomNavigationBar: NewNavBar(objects: const [
             Icon(Icons.coffee_outlined),
             Icon(Icons.local_drink_outlined),
@@ -113,23 +95,32 @@ class NewNavBar extends StatelessWidget {
 }
 
 class DataBodyWidget extends StatelessWidget {
-  List cerveja;
+  List objData;
+  List<String> columnNames;
+  List<String> propertyNames;
+  Icon icon;
   DataBodyWidget(
-      {this.cerveja = const []});
+      {required this.objData,
+      required this.columnNames,
+      required this.propertyNames,
+      required this.icon});
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: cerveja.length,
+        itemCount: objData.length,
         itemBuilder: (context, i) {
-          var cervejas = cerveja[i];
+          var objeto = objData[i];
           return ListTile(
-            leading: Icon(Icons.local_drink_outlined),
-            title: Text(cervejas["nome"]),
-            subtitle: Text("Estilo: " +
-                cervejas["style"] +
-                "\n" "IBU: " +
-                cervejas["ibu"]),
+            leading: icon,
+            title: Text(objeto[propertyNames[0]]),
+            subtitle: Text(columnNames[1] +
+                ": " +
+                objeto[propertyNames[1]] +
+                "\n" +
+                columnNames[2] +
+                ": " +
+                objeto[propertyNames[2]]),
           );
         });
   }
