@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
 var dataObjects = [];
 
@@ -10,6 +9,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print("no build da classe $MyApp");
     return MaterialApp(
         theme: ThemeData(primarySwatch: Colors.deepPurple),
         debugShowCheckedModeBanner: false,
@@ -23,17 +23,26 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class NewNavBar extends HookWidget {
-  NewNavBar();
+class NewNavBar extends StatefulWidget {
+  NewNavBar({Key? key}) : super(key: key);
+
+  @override
+  _NewNavBarState createState() => _NewNavBarState();
+}
+
+class _NewNavBarState extends State<NewNavBar> {
+  int state = 0;
 
   @override
   Widget build(BuildContext context) {
-    var state = useState(0);
+    print("no build da classe $_NewNavBarState");
     return BottomNavigationBar(
         onTap: (index) {
-          state.value = index;
+          setState(() {
+            state = index;
+          });
         },
-        currentIndex: state.value,
+        currentIndex: state,
         items: const [
           BottomNavigationBarItem(
             label: "Cafés",
@@ -55,7 +64,7 @@ class DataTableWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var columnNames = ["Nome", "Estilo", "IBU"],
         propertyNames = ["name", "style", "ibu"];
-
+    print("no build da classe $DataTableWidget");
     return DataTable(
         columns: columnNames
             .map((name) => DataColumn(

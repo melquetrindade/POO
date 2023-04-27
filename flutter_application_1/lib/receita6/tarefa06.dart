@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
 class DataService {
   final ValueNotifier<List> tableStateNotifier = new ValueNotifier([]);
@@ -127,22 +126,28 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class NewNavBar extends HookWidget {
+class NewNavBar extends StatefulWidget {
+
   var itemSelectedCallback;
 
-  NewNavBar({this.itemSelectedCallback}) {
-    itemSelectedCallback ??= () {};
-  }
+  NewNavBar({Key? key,this.itemSelectedCallback}) : super(key: key);
 
   @override
+  _NewNavBarState createState() => _NewNavBarState();
+}
+
+class _NewNavBarState extends State<NewNavBar>{
+  var state = 1;
+  @override
   Widget build(BuildContext context) {
-    var state = useState(1);
     return BottomNavigationBar(
         onTap: (index) {
-          state.value = index;
-          itemSelectedCallback(index);
+          setState(() {
+            state = index;
+            widget.itemSelectedCallback(index);
+          });
         },
-        currentIndex: state.value,
+        currentIndex: state,
         items: const [
           BottomNavigationBarItem(
             label: "Cafés",
