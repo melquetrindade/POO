@@ -6,16 +6,25 @@ import 'dart:convert';
 class DataService {
   final ValueNotifier<List> tableStateNotifier = new ValueNotifier([]);
 
+  List<String> columnsNames = [""];
+  List<String> propertyNames = [""];
+
   void carregar(index, qtd) {
-    //var res = null;
-    //print('carregar #1 - antes de carregarCervejas');
-    if (index == 0)
+    if (index == 0){
       carregarCafes(qtd);
-    else if (index == 1)
+      columnsNames = ["Nome", "Origem", "Variedade"];
+      propertyNames = ["blend_name", "origin", "variety"];
+    }
+    else if (index == 1){
       carregarCervejas(qtd);
-    else
+      columnsNames = ["Nome", "Estilo", "IBU"];
+      propertyNames = ["name", "style", "ibu"];
+    }
+    else{
       carregarNacoes(qtd);
-    //print('carregar #2 - carregarCervejas retornou $res');
+      columnsNames = ["Nacionalidade", "Capital", "Esporte Nacional"];
+      propertyNames = ["nationality", "capital", "national_sport"];
+    }
   }
 
   Future<void> carregarNacoes(qtd) async {
@@ -31,19 +40,15 @@ class DataService {
   }
 
   Future<void> carregarCervejas(qtd) async {
-    //1
+
     var beersUri = Uri(
         scheme: 'https',
         host: 'random-data-api.com',
         path: 'api/beer/random_beer',
         queryParameters: {'size': qtd});
-    //2
-    //print('carregarCervejas #1 - antes do await');
+
     var jsonString = await http.read(beersUri);
-    //3
-    //print('carregarCervejas #2 - depois do await');
     var beersJson = jsonDecode(jsonString);
-    //4
     tableStateNotifier.value = beersJson;
   }
 
@@ -75,21 +80,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: ThemeData(primarySwatch: Colors.deepPurple),
-        debugShowCheckedModeBanner: false,
-        home: MyHome());
-  }
-}
-
-class MyHome extends StatefulWidget {
-  @override
-  State<MyHome> createState() => _MyHomeState();
-}
-
-class _MyHomeState extends State<MyHome> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+      theme: ThemeData(primarySwatch: Colors.deepPurple),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
       appBar: AppBar(
         title: const Text("Dicas"),
       ),
@@ -99,31 +92,24 @@ class _MyHomeState extends State<MyHome> {
           ValueListenableBuilder(
               valueListenable: dataService.tableStateNotifier,
               builder: (_, value, __) {
-                return DataTableWidget(jsonObjects: value, propertyNames: [
-                  "capital",
-                  "national_sport",
-                  "nationality"
-                ], columnNames: [
-                  "Nome",
-                  "Estilo",
-                  "IBU"
-                ]);
+                return DataTableWidget(jsonObjects: value, propertyNames: dataService.propertyNames, 
+                columnNames: dataService.columnsNames,
+                );
               }),
         ],
       ),
       bottomNavigationBar:
           NewNavBar(itemSelectedCallback: dataService.carregar),
-    );
+    ));
   }
 }
+
 
 class MyOpcao extends HookWidget {
   MyOpcao();
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
     var state = useState(opcao[0]);
     return Container(
       height: 85,
@@ -151,7 +137,6 @@ class MyOpcao extends HookWidget {
                       onChanged: (genero0) {
                         state.value = opcao[0];
                         op2 = opcao[0];
-                        print(op2);
                       },
                     ),
                     Text(
@@ -168,7 +153,6 @@ class MyOpcao extends HookWidget {
                       onChanged: (genero0) {
                         state.value = opcao[1];
                         op2 = opcao[1];
-                        print(op2);
                       },
                     ),
                     Text(
@@ -185,7 +169,6 @@ class MyOpcao extends HookWidget {
                       onChanged: (genero0) {
                         state.value = opcao[2];
                         op2 = opcao[2];
-                        print(op2);
                       },
                     ),
                     Text(
@@ -237,7 +220,6 @@ class DataTableWidget extends StatelessWidget {
   final List jsonObjects;
 
   final List<String> columnNames;
-
   final List<String> propertyNames;
 
   DataTableWidget(
