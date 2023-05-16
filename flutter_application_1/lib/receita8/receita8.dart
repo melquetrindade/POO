@@ -10,7 +10,7 @@ class DataService {
       ValueNotifier({'status': TableStatus.idle, 'dataObjects': []});
 
   void carregar(index) {
-    final funcoes = [carregarCafes, carregarCervejas, carregarNacoes];
+    final funcoes = [carregarCafes, carregarCervejas, carregarNacoes, carregarUsers];
     tableStateNotifier.value = {
       'status': TableStatus.loading,
       'dataObjects': []
@@ -36,22 +36,21 @@ class DataService {
     });
   }
 
-  void carregarNacoes() {
+  void carregarNacoes() async {
     var nacoesUri = Uri(
-        scheme: 'https',
+        scheme: 'http',
         host: 'random-data-api.com',
         path: 'api/nation/random_nation',
         queryParameters: {'size': '5'});
 
-    http.read(nacoesUri).then((jsonString) {
-      var nocoesJson = jsonDecode(jsonString);
-      tableStateNotifier.value = {
+    var jsonString = await http.read(nacoesUri);
+    var nacoesJson = jsonDecode(jsonString);
+    tableStateNotifier.value = {
         'status': TableStatus.ready,
-        'dataObjects': nocoesJson,
+        'dataObjects': nacoesJson,
         'propertyNames': ["nationality", "capital", "national_sport"],
         'columnNames': ["Nacionalidade", "Capital", "Esporte Nacional"]
-      };
-    });
+    };
   }
 
   void carregarCervejas() {
@@ -70,6 +69,23 @@ class DataService {
         'columnNames': ["Nome", "Estilo", "IBU"]
       };
     });
+  }
+
+  void carregarUsers() async {
+    var usersUri = Uri(
+        scheme: 'http',
+        host: 'random-data-api.com',
+        path: 'api/v2/users',
+        queryParameters: {'size': '5'});
+
+    var jsonString = await http.read(usersUri);
+    var usersJson = jsonDecode(jsonString);
+    tableStateNotifier.value = {
+        'status': TableStatus.ready,
+        'dataObjects': usersJson,
+        'propertyNames': ["first_name", "email", "password"],
+        'columnNames': ["Nome", "E-mail", "Senha"]
+    };
   }
 }
 
@@ -96,9 +112,9 @@ class MyApp extends StatelessWidget {
               builder: (_, value, __) {
                 switch (value['status']) {
                   case TableStatus.idle:
-                    return Text("Toque algum botão");
+                    return MyMessage();
                   case TableStatus.loading:
-                    return CircularProgressIndicator();
+                    return Center(child: CircularProgressIndicator());
                   case TableStatus.ready:
                     return DataTableWidget(
                         jsonObjects: value['dataObjects'],
@@ -115,6 +131,45 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class MyMessage extends StatelessWidget{
+
+  @override
+  Widget build(BuildContext context){
+    return Center(
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.24,
+        width: MediaQuery.of(context).size.width * 0.40,
+        decoration: BoxDecoration(
+          color: Colors.purple[800],
+          borderRadius: BorderRadius.circular(10)
+        ),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("Selecione um Botão",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("Para usar o App basta selecionar o item que deseja visualizar",
+                style: TextStyle(
+                  
+                  color: Colors.white
+                ),
+              ),
+            )
+          ]
+        ),
+      ),
+    );
+  }
+}
+
 class NewNavBar extends HookWidget {
   final _itemSelectedCallback;
 
@@ -123,7 +178,7 @@ class NewNavBar extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    var state = useState(1);
+    var state = useState(0);
 
     return BottomNavigationBar(
         onTap: (index) {
@@ -132,15 +187,16 @@ class NewNavBar extends HookWidget {
           _itemSelectedCallback(index);
         },
         currentIndex: state.value,
+        type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
-            label: "Cafés",
-            icon: Icon(Icons.coffee_outlined),
-          ),
+            label: "Cafés",icon: Icon(Icons.coffee_outlined)),
           BottomNavigationBarItem(
-              label: "Cervejas", icon: Icon(Icons.local_drink_outlined)),
+            label: "Cervejas", icon: Icon(Icons.local_drink_outlined)),
           BottomNavigationBarItem(
-              label: "Nações", icon: Icon(Icons.flag_outlined))
+            label: "Nações", icon: Icon(Icons.flag_outlined)),
+          BottomNavigationBarItem(
+            label: "Usuários", icon: Icon(Icons.people)),
         ]);
   }
 }
