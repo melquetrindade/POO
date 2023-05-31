@@ -112,7 +112,7 @@ class MyOpcao extends HookWidget {
   Widget build(BuildContext context) {
     var state = useState(opcao[0]);
     return Container(
-      height: 85,
+      height: 105,
       width: double.infinity,
       color: Colors.purple[900],
       child: Padding(
@@ -122,8 +122,8 @@ class MyOpcao extends HookWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "Selecione o número de itens que deseja visualizar:",
-                style: TextStyle(fontSize: 17, color: Colors.white),
+                "Selecione o número de itens que deseja visualizar e click no ícone abaixo:",
+                style: TextStyle(fontSize: 15, color: Colors.white),
               ),
             ),
             Row(
@@ -231,7 +231,7 @@ class DataTableWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       //height: 535,
-      height: MediaQuery.of(context).size.height * 0.73,
+      height: MediaQuery.of(context).size.height * 0.70,
       width: double.infinity,
       child: SingleChildScrollView(
         child: DataTable(

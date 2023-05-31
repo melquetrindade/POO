@@ -10,7 +10,12 @@ class DataService {
       ValueNotifier({'status': TableStatus.idle, 'dataObjects': []});
 
   void carregar(index) {
-    final funcoes = [carregarCafes, carregarCervejas, carregarNacoes, carregarUsers];
+    final funcoes = [
+      carregarCafes,
+      carregarCervejas,
+      carregarNacoes,
+      carregarUsers
+    ];
     tableStateNotifier.value = {
       'status': TableStatus.loading,
       'dataObjects': []
@@ -33,6 +38,14 @@ class DataService {
         'propertyNames': ["blend_name", "origin", "variety"],
         'columnNames': ["Nome", "Origem", "Variedade"]
       };
+
+      tableStateNotifier.value = coffeeJson;
+    }).catchError((err, stackTrace) {
+      if (err.toString() == "XMLHttpRequest error.") {
+        tableStateNotifier.value = {
+          'status': TableStatus.error,
+        };
+      }
     });
   }
 
@@ -43,14 +56,21 @@ class DataService {
         path: 'api/nation/random_nation',
         queryParameters: {'size': '5'});
 
-    var jsonString = await http.read(nacoesUri);
+    var jsonString = await http.read(nacoesUri).catchError((err, stackTrace){
+      if (err.toString() == "XMLHttpRequest error.") {
+        tableStateNotifier.value = {
+          'status': TableStatus.error,
+        };
+      }
+    });
     var nacoesJson = jsonDecode(jsonString);
     tableStateNotifier.value = {
-        'status': TableStatus.ready,
-        'dataObjects': nacoesJson,
-        'propertyNames': ["nationality", "capital", "national_sport"],
-        'columnNames': ["Nacionalidade", "Capital", "Esporte Nacional"]
+      'status': TableStatus.ready,
+      'dataObjects': nacoesJson,
+      'propertyNames': ["nationality", "capital", "national_sport"],
+      'columnNames': ["Nacionalidade", "Capital", "Esporte Nacional"]
     };
+    tableStateNotifier.value = nacoesJson;
   }
 
   void carregarCervejas() {
@@ -68,6 +88,13 @@ class DataService {
         'propertyNames': ["name", "style", "ibu"],
         'columnNames': ["Nome", "Estilo", "IBU"]
       };
+      tableStateNotifier.value = beersJson;
+    }).catchError((err, stackTrace) {
+      if (err.toString() == "XMLHttpRequest error.") {
+        tableStateNotifier.value = {
+          'status': TableStatus.error,
+        };
+      }
     });
   }
 
@@ -78,14 +105,21 @@ class DataService {
         path: 'api/v2/users',
         queryParameters: {'size': '5'});
 
-    var jsonString = await http.read(usersUri);
+    var jsonString = await http.read(usersUri).catchError((err, stackTrace) {
+      if (err.toString() == "XMLHttpRequest error.") {
+        tableStateNotifier.value = {
+          'status': TableStatus.error,
+        };
+      }
+    });
     var usersJson = jsonDecode(jsonString);
     tableStateNotifier.value = {
-        'status': TableStatus.ready,
-        'dataObjects': usersJson,
-        'propertyNames': ["first_name", "email", "password"],
-        'columnNames': ["Nome", "E-mail", "Senha"]
+      'status': TableStatus.ready,
+      'dataObjects': usersJson,
+      'propertyNames': ["first_name", "email", "password"],
+      'columnNames': ["Nome", "E-mail", "Senha"]
     };
+    tableStateNotifier.value = usersJson;
   }
 }
 
@@ -121,9 +155,19 @@ class MyApp extends StatelessWidget {
                         propertyNames: value['propertyNames'],
                         columnNames: value['columnNames']);
                   case TableStatus.error:
-                    return Text("Lascou");
+                    return Center(child: Text("Erro ao careggar os dados",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17
+                        ),
+                    ));
                 }
-                return Text("...");
+                return Center(child: Text("Erro ao careggar os dados",
+                  style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17
+                        ),
+                ));
               }),
           bottomNavigationBar:
               NewNavBar(itemSelectedCallback: dataService.carregar),
@@ -131,40 +175,37 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyMessage extends StatelessWidget{
-
+class MyMessage extends StatelessWidget {
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Center(
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.24,
+        height: MediaQuery.of(context).size.height * 0.34,
         width: MediaQuery.of(context).size.width * 0.40,
         decoration: BoxDecoration(
-          color: Colors.purple[800],
-          borderRadius: BorderRadius.circular(10)
-        ),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("Selecione um Botão",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white
-                ),
-              ),
+            color: Colors.purple[800], borderRadius: BorderRadius.circular(10)),
+        child: Column(children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Selecione um Botão",
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("Para usar o App basta selecionar o item que deseja visualizar",
-                style: TextStyle(
-                  
-                  color: Colors.white
-                ),
-              ),
-            )
-          ]
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Para usar o App basta selecionar o item que deseja visualizar",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          Image.network(
+            'https://png.pngtree.com/png-clipart/20210113/ourlarge/pngtree-welcome-clip-art-colored-png-image_2710687.jpg',
+            width: 150,
+            height: 150,
+          )
+        ]),
       ),
     );
   }
@@ -190,13 +231,12 @@ class NewNavBar extends HookWidget {
         type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
-            label: "Cafés",icon: Icon(Icons.coffee_outlined)),
+              label: "Cafés", icon: Icon(Icons.coffee_outlined)),
           BottomNavigationBarItem(
-            label: "Cervejas", icon: Icon(Icons.local_drink_outlined)),
+              label: "Cervejas", icon: Icon(Icons.local_drink_outlined)),
           BottomNavigationBarItem(
-            label: "Nações", icon: Icon(Icons.flag_outlined)),
-          BottomNavigationBarItem(
-            label: "Usuários", icon: Icon(Icons.people)),
+              label: "Nações", icon: Icon(Icons.flag_outlined)),
+          BottomNavigationBarItem(label: "Usuários", icon: Icon(Icons.people)),
         ]);
   }
 }

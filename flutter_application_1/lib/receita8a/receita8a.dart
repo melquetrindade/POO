@@ -8,13 +8,13 @@ enum TableStatus { idle, loading, ready, error }
 enum ItemType { beer, coffee, nation, none }
 
 class DataService {
-  final ValueNotifier<Map<String, dynamic>> tableStateNotifier =
-      ValueNotifier({'status': TableStatus.idle, 'dataObjects': [],
-      'itemType': ItemType.none
-      });
+  final ValueNotifier<Map<String, dynamic>> tableStateNotifier = ValueNotifier({
+    'status': TableStatus.idle,
+    'dataObjects': [],
+    'itemType': ItemType.none
+  });
 
   void carregar(index) {
-    
     final funcoes = [carregarCafes, carregarCervejas, carregarNacoes];
 
     funcoes[index]();
@@ -24,18 +24,12 @@ class DataService {
     //ignorar solicitação se uma requisição já estiver em curso
 
     if (tableStateNotifier.value['status'] == TableStatus.loading) return;
-    if (tableStateNotifier.value['itemType'] != ItemType.coffee){
-
+    if (tableStateNotifier.value['itemType'] != ItemType.coffee) {
       tableStateNotifier.value = {
-
         'status': TableStatus.loading,
-
         'dataObjects': [],
-
         'itemType': ItemType.coffee
-
       };
-
     }
     var coffeesUri = Uri(
         scheme: 'https',
@@ -48,7 +42,11 @@ class DataService {
 
       //se já houver cafés no estado da tabela...
 
-      if (tableStateNotifier.value['status'] != TableStatus.loading) coffeesJson = [...tableStateNotifier.value['dataObjects'], ...coffeesJson];
+      if (tableStateNotifier.value['status'] != TableStatus.loading)
+        coffeesJson = [
+          ...tableStateNotifier.value['dataObjects'],
+          ...coffeesJson
+        ];
 
       tableStateNotifier.value = {
         'itemType': ItemType.coffee,
@@ -61,22 +59,15 @@ class DataService {
   }
 
   void carregarNacoes() {
-
     //ignorar solicitação se uma requisição já estiver em curso
 
     if (tableStateNotifier.value['status'] == TableStatus.loading) return;
-    if (tableStateNotifier.value['itemType'] != ItemType.nation){
-
+    if (tableStateNotifier.value['itemType'] != ItemType.nation) {
       tableStateNotifier.value = {
-
         'status': TableStatus.loading,
-
         'dataObjects': [],
-
         'itemType': ItemType.nation
-
       };
-
     }
 
     var nationsUri = Uri(
@@ -90,7 +81,11 @@ class DataService {
 
       //se já houver nações no estado da tabela...
 
-      if (tableStateNotifier.value['status'] != TableStatus.loading) nationsJson = [...tableStateNotifier.value['dataObjects'], ...nationsJson];
+      if (tableStateNotifier.value['status'] != TableStatus.loading)
+        nationsJson = [
+          ...tableStateNotifier.value['dataObjects'],
+          ...nationsJson
+        ];
 
       tableStateNotifier.value = {
         'itemType': ItemType.nation,
@@ -108,24 +103,17 @@ class DataService {
   }
 
   void carregarCervejas() {
-
     //ignorar solicitação se uma requisição já estiver em curso
 
     if (tableStateNotifier.value['status'] == TableStatus.loading) return;
     //emitir estado loading se items em exibição não forem cervejas
 
-    if (tableStateNotifier.value['itemType'] != ItemType.beer){
-
+    if (tableStateNotifier.value['itemType'] != ItemType.beer) {
       tableStateNotifier.value = {
-
         'status': TableStatus.loading,
-
         'dataObjects': [],
-
         'itemType': ItemType.beer
-
       };
-
     }
 
     var beersUri = Uri(
@@ -139,7 +127,8 @@ class DataService {
 
       //se já houver cervejas no estado da tabela...
 
-      if (tableStateNotifier.value['status'] != TableStatus.loading) beersJson = [...tableStateNotifier.value['dataObjects'], ...beersJson];
+      if (tableStateNotifier.value['status'] != TableStatus.loading)
+        beersJson = [...tableStateNotifier.value['dataObjects'], ...beersJson];
 
       tableStateNotifier.value = {
         'itemType': ItemType.beer,
@@ -173,9 +162,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(primarySwatch: Colors.deepPurple),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          appBar: AppBar(
-            title: const Text("Dicas"),
-          ),
+          appBar: AppBar(title: Text("Dicas")),
           body: ValueListenableBuilder(
               valueListenable: dataService.tableStateNotifier,
               builder: (_, value, __) {
@@ -190,8 +177,7 @@ class MyApp extends StatelessWidget {
                     return ListWidget(
                         jsonObjects: value['dataObjects'],
                         propertyNames: value['propertyNames'],
-                        scrollEndedCallback: functionsMap[value['itemType']]
-                        );
+                        scrollEndedCallback: functionsMap[value['itemType']]);
 
                   case TableStatus.error:
                     return Text("Lascou");
@@ -253,7 +239,7 @@ class ListWidget extends HookWidget {
 
     useEffect(() {
       controller.addListener(() {
-        if (controller.position.pixels == controller.position.maxScrollExtent){
+        if (controller.position.pixels == controller.position.maxScrollExtent) {
           print('end of scroll');
           if (_scrollEndedCallback is Function) {
             _scrollEndedCallback();
@@ -303,3 +289,4 @@ class ListWidget extends HookWidget {
     );
   }
 }
+
