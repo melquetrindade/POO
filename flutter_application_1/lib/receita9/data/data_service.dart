@@ -7,38 +7,73 @@ enum TableStatus { idle, loading, ready, error }
 enum ItemType { beer, coffee, nation, none }
 
 class DataService {
-  final ValueNotifier<Map<String, dynamic>> tableStateNotifier = ValueNotifier({
+  static const MAX_N_ITEMS = 15;
+  static const MIN_N_ITEMS = 3;
+  static const DEFAULT_N_ITEMS = 7;
+
+  int _numberOfItems = DEFAULT_N_ITEMS;
+
+  set numberOfItems(n) {
+    _numberOfItems = n <= 0
+        ? MIN_N_ITEMS
+        : n > MAX_N_ITEMS
+            ? MAX_N_ITEMS
+            : n;
+  }
+
+  get numberOfItems {
+    return _numberOfItems;
+  }
+
+  ValueNotifier<Map<String, dynamic>> tableStateNotifier = ValueNotifier({
     'status': TableStatus.idle,
     'dataObjects': [],
     'itemType': ItemType.none
   });
 
+  String elPath = '';
+  var tipo = ItemType.coffee;
+
   void carregar(index) {
+    if (index == 0) {
+      elPath = 'api/coffee/random_coffee';
+      tipo = ItemType.coffee;
+    } else if (index == 1) {
+      elPath = 'api/beer/random_beer';
+      tipo = ItemType.beer;
+    } else {
+      elPath = 'api/nation/random_nation';
+      tipo = ItemType.nation;
+    }
+
     final funcoes = [carregarCafes, carregarCervejas, carregarNacoes];
 
     funcoes[index]();
   }
 
-  void carregarCafes() {
-    //ignorar solicitação se uma requisição já estiver em curso
-
+  dynamic carregaUri() {
     if (tableStateNotifier.value['status'] == TableStatus.loading) return;
 
-    if (tableStateNotifier.value['itemType'] != ItemType.coffee) {
+    if (tableStateNotifier.value['itemType'] != tipo) {
       tableStateNotifier.value = {
         'status': TableStatus.loading,
         'dataObjects': [],
-        'itemType': ItemType.coffee
+        'itemType': tipo
       };
     }
 
-    var coffeesUri = Uri(
+    var objsUri = Uri(
         scheme: 'https',
         host: 'random-data-api.com',
-        path: 'api/coffee/random_coffee',
-        queryParameters: {'size': '10'});
+        path: elPath,
+        queryParameters: {'size': '$_numberOfItems'});
+    return objsUri;
+  }
 
-    http.read(coffeesUri).then((jsonString) {
+  void carregarCafes() {
+    var receb = carregaUri();
+
+    http.read(receb).then((jsonString) {
       var coffeesJson = jsonDecode(jsonString);
 
       //se já houver cafés no estado da tabela...
@@ -60,25 +95,9 @@ class DataService {
   }
 
   void carregarNacoes() {
-    //ignorar solicitação se uma requisição já estiver em curso
+    var receb = carregaUri();
 
-    if (tableStateNotifier.value['status'] == TableStatus.loading) return;
-
-    if (tableStateNotifier.value['itemType'] != ItemType.nation) {
-      tableStateNotifier.value = {
-        'status': TableStatus.loading,
-        'dataObjects': [],
-        'itemType': ItemType.nation
-      };
-    }
-
-    var nationsUri = Uri(
-        scheme: 'https',
-        host: 'random-data-api.com',
-        path: 'api/nation/random_nation',
-        queryParameters: {'size': '10'});
-
-    http.read(nationsUri).then((jsonString) {
+    http.read(receb).then((jsonString) {
       var nationsJson = jsonDecode(jsonString);
 
       //se já houver nações no estado da tabela...
@@ -105,27 +124,9 @@ class DataService {
   }
 
   void carregarCervejas() {
-    //ignorar solicitação se uma requisição já estiver em curso
+    var receb = carregaUri();
 
-    if (tableStateNotifier.value['status'] == TableStatus.loading) return;
-
-    //emitir estado loading se items em exibição não forem cervejas
-
-    if (tableStateNotifier.value['itemType'] != ItemType.beer) {
-      tableStateNotifier.value = {
-        'status': TableStatus.loading,
-        'dataObjects': [],
-        'itemType': ItemType.beer
-      };
-    }
-
-    var beersUri = Uri(
-        scheme: 'https',
-        host: 'random-data-api.com',
-        path: 'api/beer/random_beer',
-        queryParameters: {'size': '10'});
-
-    http.read(beersUri).then((jsonString) {
+    http.read(receb).then((jsonString) {
       var beersJson = jsonDecode(jsonString);
 
       //se já houver cervejas no estado da tabela...
