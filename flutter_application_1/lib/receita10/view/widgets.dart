@@ -90,14 +90,11 @@ class NewNavBar extends HookWidget {
 }
 
 class DataTableWidget extends StatelessWidget {
+
   final List jsonObjects;
-
   final List<String> columnNames;
-
   final List<String> propertyNames;
-
   final sortedColumn;
-
   final isAscending;
 
   DataTableWidget(
@@ -115,7 +112,7 @@ class DataTableWidget extends StatelessWidget {
         columns: columnNames
             .map((name) => DataColumn(
               onSort: (columnIndex, ascending) => 
-                dataService.ordenarEstadoAtual(propertyNames[columnIndex],ascending),
+                dataService.ordenarEstadoAtual(propertyNames[columnIndex]),
                 label: Expanded(
                     child: Text(name,
                         style: TextStyle(fontStyle: FontStyle.italic)))))

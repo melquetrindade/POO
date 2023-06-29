@@ -6,3 +6,18 @@ void main() {
 
   runApp(app);
 }
+
+/*
+abstract class Magico{
+  double transformarEmNumero(dynamic obj);
+}
+
+class Somador {
+  double somar(List objetos, Magico m) {
+    double res = 0;
+    for (dynamic obj in objetos) {
+      res += m.transformarEmNumero(obj)
+    }
+    return res;
+  }
+}*/
