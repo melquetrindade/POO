@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../util/ordenador.dart';
 
 enum TableStatus { idle, loading, ready, error }
-
-//users (email; first_name; date_of_birth)
-//appliances (equipment; brand; uid)
-//addresses (city; street_name; community)
 
 enum ItemType {
   users,

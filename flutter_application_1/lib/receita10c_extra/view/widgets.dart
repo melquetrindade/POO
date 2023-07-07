@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import '../data/data_service.dart';
+import '../util/search.dart';
 
 class MyApp extends HookWidget {
   @override
@@ -11,6 +12,11 @@ class MyApp extends HookWidget {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           appBar: AppBar(title: const Text("Dicas"), actions: [
+            IconButton(
+                onPressed: () {
+                  showSearch(context: context, delegate: Search());
+                },
+                icon: Icon(Icons.search)),
             PopupMenuButton(
               initialValue: popUpState.value,
               itemBuilder: (_) => dataService.possibleNItems
@@ -104,8 +110,7 @@ class DataTableWidget extends StatelessWidget {
         columns: columnNames
             .map((name) => DataColumn(
                 onSort: (columnIndex, ascending) =>
-                    dataService.sort(
-                        propertyNames[columnIndex], isAscending),
+                    dataService.sort(propertyNames[columnIndex], isAscending),
                 label: Expanded(
                     child: Text(name,
                         style: TextStyle(fontStyle: FontStyle.italic)))))
