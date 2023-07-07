@@ -104,7 +104,7 @@ class DataTableWidget extends StatelessWidget {
         columns: columnNames
             .map((name) => DataColumn(
                 onSort: (columnIndex, ascending) =>
-                    dataService.ordenarEstadoAtual(
+                    dataService.sort(
                         propertyNames[columnIndex], isAscending),
                 label: Expanded(
                     child: Text(name,

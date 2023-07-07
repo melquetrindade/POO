@@ -72,21 +72,21 @@ class DataService {
     carregarPorTipo(params[index]);
   }
 
-  void ordenarEstadoAtual(final String propriedade, final bool ordem) {
-    print(ordem);
+  void sort(final String propriedade, final bool ordem) {
     List objetos = tableStateNotifier.value['dataObjects'] ?? [];
     if (objetos == []) return;
-    Ordenador ord = Ordenador();
-    Decididor d = DecididorJSON(propriedade, ordem);
-    var objetosOrdenados =
-        ord.ordenar(objetos, d.precisaTrocarAtualPeloProximo);
-
-    emitirEstadoOrdenado(objetosOrdenados, propriedade, ordem);
+    List a = objetos;
+    List b = objetos;
+    if (!ordem) {
+      objetos.sort((a, b) => a[propriedade].compareTo(b[propriedade]));
+    } else {
+      objetos.sort((a, b) => a[propriedade].compareTo(b[propriedade]));
+      objetos = objetos.reversed.toList();
+    }
+    emitirEstadoOrdenado(objetos, propriedade, ordem);
   }
 
   Uri montarUri(ItemType type) {
-    print(type.asString);
-    print(_numberOfItems);
     return Uri(
         scheme: 'https',
         host: 'random-data-api.com',
@@ -146,22 +146,3 @@ class DataService {
 }
 
 final dataService = DataService();
-
-class DecididorJSON extends Decididor {
-  final String propriedade;
-  final bool crescente;
-
-  DecididorJSON(this.propriedade, this.crescente);
-
-  @override
-  bool precisaTrocarAtualPeloProximo(atual, proximo) {
-    try {
-      final ordemCorreta = crescente ? [atual, proximo] : [proximo, atual];
-      return ordemCorreta[0][propriedade]
-              .compareTo(ordemCorreta[1][propriedade]) >
-          0;
-    } catch (error) {
-      return false;
-    }
-  }
-}
