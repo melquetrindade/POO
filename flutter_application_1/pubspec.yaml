@@ -37,6 +37,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_hooks: ^0.18.6
   http: ^0.13.6
+  dio: ^5.1.2
+  filter_list: ^1.0.2
 
 dev_dependencies:
   flutter_test:

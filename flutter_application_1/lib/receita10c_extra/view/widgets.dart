@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import '../data/data_service.dart';
 import '../util/search.dart';
+import 'package:filter_list/filter_list.dart';
 
 class MyApp extends HookWidget {
   @override
@@ -14,7 +15,7 @@ class MyApp extends HookWidget {
           appBar: AppBar(title: const Text("Dicas"), actions: [
             IconButton(
                 onPressed: () {
-                  showSearch(context: context, delegate: Search());
+                  
                 },
                 icon: Icon(Icons.search)),
             PopupMenuButton(
