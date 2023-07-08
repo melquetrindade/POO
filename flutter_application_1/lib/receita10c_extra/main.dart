@@ -5,3 +5,7 @@ void main() {
   MyApp app = MyApp();
   runApp(app);
 }
+
+class Teste{
+  
+}
