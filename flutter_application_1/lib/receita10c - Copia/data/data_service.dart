@@ -53,17 +53,6 @@ class DataService{
     carregarPorTipo(params[index]);  
   }
 
-  void ordenarEstadoAtual(final String propriedade, final bool ascending ){
-    List objetos = tableStateNotifier.value['dataObjects'] ?? [];
-    if (objetos == []) return;
-    objetos.sort((a, b) =>
-      ascending ? a[propriedade].compareTo(b[propriedade]) :
-                  b[propriedade].compareTo(a[propriedade])
-    );
-
-    emitirEstadoOrdenado(objetos, propriedade, ascending);
-  }
-
   List filtarObjetos() {
     String filtro = tableStateNotifier.value['filterCriteria'];
     List objetos = tableStateNotifier.value['dataObjects'] ?? [];
@@ -76,6 +65,20 @@ class DataService{
     ).toList();
 
     return objetosFiltrados;
+  }
+
+  void sort(final String propriedade, final bool ordem) {
+    List objetos = tableStateNotifier.value['dataObjects'] ?? [];
+    if (objetos == []) return;
+    List a = objetos;
+    List b = objetos;
+    if (!ordem) {
+      objetos.sort((a, b) => a[propriedade].compareTo(b[propriedade]));
+    } else {
+      objetos.sort((a, b) => a[propriedade].compareTo(b[propriedade]));
+      objetos = objetos.reversed.toList();
+    }
+    emitirEstadoOrdenado(objetos, propriedade, ordem);
   }
 
   Uri montarUri(ItemType type) {
@@ -97,7 +100,7 @@ class DataService{
     var estado = Map<String, dynamic>.from(tableStateNotifier.value); 
     estado['dataObjects'] = objetosOrdenados;
     estado['sortCriteria'] = propriedade;
-    estado['ascending'] = ascending;
+    estado['ascending'] = !ascending;
     tableStateNotifier.value = estado;
   }
 
