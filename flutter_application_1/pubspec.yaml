@@ -39,6 +39,7 @@ dependencies:
   http: ^0.13.6
   dio: ^5.1.2
   filter_list: ^1.0.2
+  easy_search_bar: ^2.5.0
 
 dev_dependencies:
   flutter_test:
